@@ -124,7 +124,10 @@ export function DataUpdateModal({ user }: ModalProps) {
               infoText={
                 <Stack spacing="0">
                   <Text>Deve conter ao menos um dígito;</Text>
-                  <Text>Deve conter ao menos uma letra maiúscula;</Text>
+                  <Text>
+                    Deve conter ao menos uma letra maiúscula e uma letra
+                    minuscula;
+                  </Text>
                   <Text>Deve conter ao menos 6 caracteres;</Text>
                 </Stack>
               }
