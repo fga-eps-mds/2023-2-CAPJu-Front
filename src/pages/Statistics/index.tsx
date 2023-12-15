@@ -19,7 +19,6 @@ import Chart from "chart.js/auto";
 import { PrivateLayout } from "layouts/Private";
 import { getFlows, getFlowById } from "services/processManagement/flows";
 import {
-  getAllProcessByStage,
   getCountProcessByIdFlow,
   getStagesByIdFlow,
 } from "services/processManagement/statistics";
@@ -186,9 +185,9 @@ export default function Statistics() {
 
       const resAllProcess = await getStagesByIdFlow(
         selectedFlow,
-        Number.isNaN(selectedStage)? -1: selectedStage,
+        Number.isNaN(selectedStage) ? -1 : selectedStage,
         0,
-        100000000000000,
+        100000000000000
       );
 
       const auxStages = Object.keys(stages);
@@ -197,10 +196,10 @@ export default function Statistics() {
 
       auxStages.forEach((elem) => {
         const aux = elem as unknown as number;
-        if(stages[aux].idStage === selectedStage)
-          stageSelectedName=stages[aux].name
-      })
-      
+        if (stages[aux].idStage === selectedStage)
+          stageSelectedName = stages[aux].name;
+      });
+
       if (resAllProcess.type === "success") {
         await downloadProcess(
           stageSelectedName ?? "Não iniciado",

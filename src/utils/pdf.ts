@@ -33,7 +33,7 @@ export const downloadProcess = async (
 
     const currentY = 70;
 
-    pdf.text(`Processo da etapa ${stage}`, 15, 60);
+    pdf.text(`Processo da etapa: ${stage}`, 15, 60);
     const tableHTML = constructTableHTML(processes);
     container.style.display = "none";
     container.innerHTML = tableHTML;
