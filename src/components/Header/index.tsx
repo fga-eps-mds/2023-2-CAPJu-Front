@@ -29,7 +29,7 @@ import { isActionAllowedToUser } from "../../utils/permissions";
 
 export function Header() {
   const { getUserData } = useAuth();
-  const { isAuthenticated, handleLogout } = useAuth();
+  const { isAuthenticated, handleLogout, allowLogout } = useAuth();
   const { isLoading } = useLoading();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -153,6 +153,7 @@ export function Header() {
                         onClick={() => {
                           navigate("/acessos");
                           setIsOpen(false);
+                          setTabIndex(-1);
                         }}
                         leftIcon={<FaUser color="black" />}
                         justifyContent="flex-start"
@@ -172,6 +173,7 @@ export function Header() {
                         onClick={() => {
                           navigate("/perfis");
                           setIsOpen(false);
+                          setTabIndex(-1);
                         }}
                         leftIcon={
                           <PiListMagnifyingGlassDuotone color="black" />
@@ -194,6 +196,7 @@ export function Header() {
                         onClick={() => {
                           navigate("/editar-conta");
                           setIsOpen(false);
+                          setTabIndex(-1);
                         }}
                         justifyContent="flex-start"
                       >
@@ -212,6 +215,7 @@ export function Header() {
                         onClick={() => {
                           navigate("/contribuidores");
                           setIsOpen(false);
+                          setTabIndex(-1);
                         }}
                         leftIcon={
                           <IoIosInformationCircleOutline color="black" />
@@ -236,7 +240,9 @@ export function Header() {
                           handleLogout();
                           navigate("/");
                           setIsOpen(false);
+                          setTabIndex(-1);
                         }}
+                        isDisabled={!allowLogout()}
                       >
                         <Flex alignItems="center">
                           <Text ml="2">Sair</Text>

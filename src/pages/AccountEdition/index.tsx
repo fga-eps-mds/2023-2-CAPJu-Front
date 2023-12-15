@@ -55,7 +55,7 @@ function AccountEdition() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordOld, setShowPasswordOld] = useState(false);
   const [showPasswordValidation, setShowPasswordValidation] = useState(false);
-  const { user, handleLogout } = useAuth();
+  const { user, handleLogout, allowLogout } = useAuth();
   const toast = useToast();
   const { handleLoading } = useLoading();
   const {
@@ -301,6 +301,8 @@ function AccountEdition() {
                     type={showPassword ? "text" : "password"}
                     label="Nova senha"
                     placeholder="Crie uma nova senha"
+                    readOnly // These two lines avoid the autofilling of the password input
+                    onFocus={(e) => e.target.removeAttribute("readOnly")}
                     // errors={errors.newPassword}
                     infoText={
                       <Stack spacing="0">
@@ -334,6 +336,8 @@ function AccountEdition() {
                     placeholder="Confirme sua nova senha"
                     errors={errors.newPasswordConfirmation}
                     {...register("newPasswordConfirmation")}
+                    readOnly
+                    onFocus={(e) => e.target.removeAttribute("readOnly")}
                   />
                   <InputRightElement>
                     <IconButton
@@ -367,6 +371,8 @@ function AccountEdition() {
                   textAlign="center"
                   errors={errors.oldPassword}
                   {...register("oldPassword")}
+                  readOnly
+                  onFocus={(e) => e.target.removeAttribute("readOnly")}
                 />
                 <InputRightElement>
                   <IconButton
@@ -386,6 +392,7 @@ function AccountEdition() {
                 type="submit"
                 size="md"
                 marginTop="10px"
+                isDisabled={!allowLogout()}
               >
                 Salvar alterações
               </Button>
