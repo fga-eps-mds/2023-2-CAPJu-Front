@@ -16,12 +16,15 @@ import {
   Input,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
+import { v4 as uuidv4 } from "uuid";
 import { Pagination } from "../../../components/Pagination";
 import {
   findAllPaged,
   findFileById,
+  generateResultingFile,
 } from "../../../services/processManagement/processesFile";
 import { formatDateTimeToBrazilian } from "../../../utils/dates";
 import { DataTable } from "../../../components/DataTable";
@@ -30,9 +33,11 @@ import { VisualizationItemsModal } from "./VisualizationFileItemsModal";
 import { ImportProcessesModal } from "../ImportProcessesModal";
 import { useAuth } from "../../../hooks/useAuth";
 import template from "../../../utils/templates";
+import { downloadFileFromBuffer } from "../../../utils/file";
 
 export default function ProcessesFileComponent() {
   const { getUserData } = useAuth();
+  const toast = useToast();
 
   const tableColumnHelper = createColumnHelper<TableRow<any>>();
 
@@ -58,7 +63,7 @@ export default function ProcessesFileComponent() {
         isSortable: true,
       },
     }),
-    tableColumnHelper.accessor("errorItemCount", {
+    tableColumnHelper.accessor("errorItemsCount", {
       cell: (info) => info.getValue(),
       header: "Erro",
       meta: {
@@ -158,10 +163,9 @@ export default function ProcessesFileComponent() {
         disabledOn: (file: ProcessesFile) =>
           ["waiting", "inProgress", "error"].includes(file.status),
         action: async ({ processesFile }) =>
-          downloadProcessesFile(
+          downloadResultingFile(
             processesFile.idProcessesFile,
-            "dataResultingFile",
-            true
+            processesFile.fileName
           ),
       },
       // This is not working
@@ -215,35 +219,29 @@ export default function ProcessesFileComponent() {
       format
     )) as any;
     const bytes = result.value[fileKey].data;
-    // console.log(bytes)
-    // if(format === 'csv') {
-    //   downloadCsv(bytes);
-    //   return;
-    // }
-    const ab = new ArrayBuffer(bytes.length);
-    const ia = new Uint8Array(ab);
+    downloadFileFromBuffer(bytes, result.value.fileName);
+  };
 
-    for (let i = 0; i < bytes.length; i += 1) {
-      ia[i] = bytes[i];
+  const downloadResultingFile = async (
+    idProcessesFile: number,
+    originalFileName: string
+  ) => {
+    const result = await generateResultingFile(idProcessesFile);
+
+    if (result.type === "error") {
+      toast({
+        id: "generate-result-file-error",
+        title: "Erro ao gerar arquivo resultado.",
+        status: "error",
+        isClosable: true,
+      });
+      return;
     }
 
-    const blob = new Blob([ia], { type: "application/octet-stream" });
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-
-    a.style.display = "none";
-    a.href = url;
-
-    a.download = resulting
-      ? replaceFileExtension(result.value.fileName, format)
-      : result.value.fileName;
-
-    document.body.appendChild(a);
-    a.click();
-
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    downloadFileFromBuffer(
+      result.value.data,
+      replaceFileExtension(originalFileName, "_resultado.xlsx")
+    );
   };
 
   const [
@@ -284,7 +282,21 @@ export default function ProcessesFileComponent() {
           name: processesFile.name || processesFile.fileName,
           status: <Text color={status.color}>{status.text}</Text>,
           createdAt: formatDateTimeToBrazilian(processesFile.createdAt),
-          message: <Text align="center">{processesFile.message || "-"}</Text>,
+          message: (
+            <>
+              {processesFile.message ? (
+                processesFile.message.split("\n").map((msg: string) => (
+                  <Text key={uuidv4()} my={15} align="center">
+                    {msg}
+                  </Text>
+                ))
+              ) : (
+                <Text my={15} align="center">
+                  -
+                </Text>
+              )}
+            </>
+          ),
           importedItemsCount: (
             <Text align="center">
               {processesFile.status === "imported"
@@ -292,10 +304,10 @@ export default function ProcessesFileComponent() {
                 : "-"}
             </Text>
           ),
-          errorItemCount: (
+          errorItemsCount: (
             <Text align="center">
               {processesFile.status === "imported"
-                ? processesFile.errorItemCount
+                ? processesFile.errorItemsCount
                 : "-"}
             </Text>
           ),
