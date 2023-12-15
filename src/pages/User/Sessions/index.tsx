@@ -162,81 +162,74 @@ function UserSessions() {
   return (
     <>
       <PrivateLayout>
-        <Flex w="40%" flexDir="column" gap="3" mb="4" mt="50px">
+        <Flex
+          w="100%"
+          maxWidth={1120}
+          flexDir="column"
+          gap="3"
+          mb="4"
+          mt="50px"
+        >
           <Flex w="100%" mb="2" justifyContent="start" alignItems="baseline">
             {" "}
             {/* Add alignItems here */}
-            <Text fontSize="25px" fontWeight="semibold" width="25%">
+            <Text fontSize="25px" fontWeight="semibold">
               Sessões Usuários
             </Text>
-            <Flex
-              width="100%"
-              justifyContent="space-between"
+          </Flex>
+          <Flex mb="15px">
+            <chakra.form
+              onSubmit={(e) => {
+                e.preventDefault();
+                refetchSessions().finally();
+              }}
+              width="60%"
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
               gap="2"
-              flexWrap="wrap"
-              mt="25px"
+              ml="auto"
             >
-              <Flex
-                w="100%"
-                justifyContent="flex-start"
-                alignItems="center"
-                gap="2"
-                flexWrap="wrap"
+              <Input
+                color="black"
+                placeholder="Pesquise usuários por unidade, nome, cpf ou email"
+                variant="filled"
+                onChange={({ target }) => setFilter(target.value)}
+                value={filter}
+                css={{
+                  "&, &:hover, &:focus": {
+                    background: "white",
+                  },
+                }}
+              />
+              <Button
+                aria-label="botão de limpeza"
+                colorScheme="green"
+                justifyContent="center"
+                title={filter && "Limpar filtro"}
+                isDisabled={!filter}
+                onClick={() => {
+                  setFilter("");
+                  refetchSessions(undefined, "").finally();
+                }}
               >
-                <chakra.form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    refetchSessions().finally();
-                  }}
-                  width="60%"
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                  gap="2"
-                  ml="auto"
-                >
-                  <Input
-                    color="black"
-                    placeholder="Pesquise usuários por unidade, nome, cpf ou email"
-                    variant="filled"
-                    onChange={({ target }) => setFilter(target.value)}
-                    value={filter}
-                    css={{
-                      "&, &:hover, &:focus": {
-                        background: "white",
-                      },
-                    }}
-                  />
-                  <Button
-                    aria-label="botão de limpeza"
-                    colorScheme="green"
-                    justifyContent="center"
-                    title={filter && "Limpar filtro"}
-                    isDisabled={!filter}
-                    onClick={() => {
-                      setFilter("");
-                      refetchSessions(undefined, "").finally();
-                    }}
-                  >
-                    <Icon as={FaEraser} boxSize={4} />
-                  </Button>
-                  <Button
-                    aria-label="botão de busca"
-                    colorScheme="green"
-                    justifyContent="center"
-                    title="Pesquisar"
-                    type="submit"
-                  >
-                    <SearchIcon boxSize={4} />
-                  </Button>
-                </chakra.form>
-              </Flex>
-            </Flex>
+                <Icon as={FaEraser} boxSize={4} />
+              </Button>
+              <Button
+                aria-label="botão de busca"
+                colorScheme="green"
+                justifyContent="center"
+                title="Pesquisar"
+                type="submit"
+              >
+                <SearchIcon boxSize={4} />
+              </Button>
+            </chakra.form>
           </Flex>
         </Flex>
         <DataTable
-          maxWidth="unset"
-          width="40%"
+          maxWidth="1140"
+          width="100%"
           size="lg"
           data={processesFileTableRows}
           rawData={rawSessions}
