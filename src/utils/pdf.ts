@@ -165,17 +165,18 @@ export const downloadPDFQuantityProcesses = async (
         const dataURI = canvas.toDataURL("image/jpeg");
 
         pdf.setFont("helvetica", "bold");
-        if (tableFinalY > 230) {
-          pdf.addPage();
-          tableFinalY = 20;
-        }
-        pdf.addImage(dataURI, "JPEG", 30, tableFinalY + 10, 150, 0);
+
+        pdf.addImage(dataURI, "JPEG", 30, tableFinalY + 5, 150, 0);
 
         canvas.remove();
       });
     }
 
-    await addLogos(pdf, tableFinalY);
+    if (!elem) {
+      await addLogos(pdf, tableFinalY);
+    } else {
+      await addLogos(pdf, 165);
+    }
 
     pdf.save(`Quantidade_Processos_Concluidos_Interrompidos`);
 

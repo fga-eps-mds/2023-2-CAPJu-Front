@@ -222,24 +222,14 @@ function AccountEdition() {
 
   return (
     <PrivateLayout>
-      <Flex w="90%" maxW={1120} flexDir="column" gap="3" mb="4">
-        <Flex
-          w="100%"
-          justifyContent="space-between"
-          gap="2"
-          flexWrap="wrap"
-          marginTop="25px"
-        >
-          <Text
-            className="chakra-text css-115fr15"
-            fontSize="25px"
-            fontWeight="semibold"
-          >
+      <Flex w="100%" maxWidth={1120} flexDir="column" gap="3" mb="4" mt="50px">
+        <Flex w="100%" mb="2" justifyContent="start">
+          <Text fontSize="25px" fontWeight="semibold">
             Editar conta
           </Text>
         </Flex>
       </Flex>
-      <Card p="2.5%" w="50%" maxW="83%" mt="2">
+      <Card p="2.5%" w="100%" maxWidth={1120} mt="2">
         <CardBody
           w="100%"
           p={0}
@@ -317,7 +307,10 @@ function AccountEdition() {
                     infoText={
                       <Stack spacing="0">
                         <Text>Deve conter ao menos um dígito;</Text>
-                        <Text>Deve conter ao menos uma letra maiúscula;</Text>
+                        <Text>
+                          Deve conter ao menos uma letra maiúscula e uma letra
+                          minuscula;
+                        </Text>
                         <Text>Deve conter ao menos 6 caracteres;</Text>
                       </Stack>
                     }
@@ -368,7 +361,7 @@ function AccountEdition() {
               alignItems="center"
               justifyContent="center"
               gap="2"
-              marginTop="10"
+              marginTop="5"
               flexWrap="wrap"
             >
               <Text>Para confirmar as alterações, digite sua senha atual:</Text>
@@ -397,7 +390,8 @@ function AccountEdition() {
                 w={["100%", "fit-content"]}
                 colorScheme="green"
                 type="submit"
-                size="sm"
+                size="md"
+                marginTop="10px"
                 isDisabled={!allowLogout()}
               >
                 Salvar alterações

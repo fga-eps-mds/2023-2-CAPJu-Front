@@ -43,13 +43,34 @@ export const epsStudents20231 = [
 ];
 
 export const mdsStudents20232 = [
-  "Amanda de Moura",
-  "Bruno Ricardo de Menezes",
-  "Camila Costa de Souza Careli",
-  "Daniel Rodrigues da Rocha",
-  "Davi Rodrigues da Rocha",
-  "Felipe de Oliveira Motta",
-  "Leandro Almeida Rocha Santos",
+  {
+    name: "Amanda de Moura",
+    profile: "https://github.com/AmandaaMoura",
+  },
+  {
+    name: "Bruno Ricardo de Menezes",
+    profile: "https://github.com/EhOBruno",
+  },
+  {
+    name: "Camila Costa de Souza Careli",
+    profile: "https://github.com/camilacareli",
+  },
+  {
+    name: "Daniel Rodrigues da Rocha",
+    profile: "https://github.com/DanielRogs",
+  },
+  {
+    name: "Davi Rodrigues da Rocha",
+    profile: "https://github.com/DaviRogs",
+  },
+  {
+    name: "Felipe de Oliveira Motta",
+    profile: "https://github.com/M0tt1nh4",
+  },
+  {
+    name: "Leandro Almeida Rocha Santos",
+    profile: "https://github.com/LeanArs",
+  },
 ];
 
 export const mdsStudents20231 = [
