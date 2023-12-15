@@ -223,13 +223,13 @@ function AccountEdition() {
   return (
     <PrivateLayout>
       <Flex w="100%" maxWidth={1120} flexDir="column" gap="3" mb="4" mt="50px">
-        <Flex w="50%" mb="2" justifyContent="start">
+        <Flex w="100%" mb="2" justifyContent="start">
           <Text fontSize="25px" fontWeight="semibold">
             Editar conta
           </Text>
         </Flex>
       </Flex>
-      <Card p="2.5%" w="36%" maxW="83%" mt="2">
+      <Card p="2.5%" w="100%" maxWidth={1120} mt="2">
         <CardBody
           w="100%"
           p={0}
