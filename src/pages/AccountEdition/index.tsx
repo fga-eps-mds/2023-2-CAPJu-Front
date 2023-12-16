@@ -311,12 +311,6 @@ function AccountEdition() {
                     type={showPassword ? "text" : "password"}
                     label="Nova senha"
                     placeholder="Crie uma nova senha"
-                    readOnly
-                    onFocus={(e) => e.currentTarget.removeAttribute("readOnly")}
-                    onBlur={(e) =>
-                      e.currentTarget.setAttribute("readOnly", "true")
-                    }
-                    // errors={errors.newPassword}
                     infoText={
                       <Stack spacing="0">
                         <Text>Deve conter ao menos um dígito;</Text>
@@ -328,6 +322,11 @@ function AccountEdition() {
                       </Stack>
                     }
                     {...register("newPassword")}
+                    readOnly
+                    onFocus={(e) => e.currentTarget.removeAttribute("readOnly")}
+                    onBlur={(e) =>
+                      e.currentTarget.setAttribute("readOnly", "true")
+                    }
                   />
                   <InputRightElement>
                     <IconButton
