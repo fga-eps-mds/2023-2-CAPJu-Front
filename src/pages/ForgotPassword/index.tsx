@@ -321,7 +321,7 @@ function ForgotPassword() {
                   placeholder="exemplo@email.com"
                   errors={errors.email}
                   {...register("email")}
-                  infoText="Uma senha temporária será enviada."
+                  infoText="Um link para recuperação será enviado."
                 />
                 <Button
                   colorScheme="green"
