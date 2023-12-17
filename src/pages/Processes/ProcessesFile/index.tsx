@@ -396,7 +396,6 @@ export default function ProcessesFileComponent() {
                   variant="outline"
                   colorScheme="black"
                   style={{ marginLeft: "2px" }}
-                  title="Baixar modelo csv"
                 >
                   <Icon
                     as={FaFileCsv}
