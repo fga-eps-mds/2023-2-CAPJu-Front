@@ -223,7 +223,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         await checkJwtExpiration();
         localStorage.removeItem("@CAPJu:check_session_flag");
       }
-    }, 50);
+    }, 500);
 
     jwtPresenceCheckInterval = setInterval(() => {
       if (!localStorage.getItem("@CAPJu:jwt_user")) {
