@@ -47,6 +47,13 @@ function ForgotPassword() {
   const [isLoadingForm, setIsLoadingForm] = useState(true);
   const [token, setToken] = useState("");
 
+  const clearPasswordRecoveryTokenCheckFlag = (ms: number = 1000) => {
+    setTimeout(
+      () => localStorage.removeItem("@CAPJU: password_recovery_token_checked"),
+      ms
+    );
+  };
+
   async function checkUrlPasswordRecoveryToken() {
     const searchParams = new URLSearchParams(location.search);
     const urlToken = searchParams.get("token");
@@ -68,11 +75,7 @@ function ForgotPassword() {
         setIsPasswordRecovery(true);
         setIsLoadingForm(false);
       }
-      setTimeout(
-        () =>
-          localStorage.removeItem("@CAPJU: password_recovery_token_checked"),
-        1000
-      );
+      clearPasswordRecoveryTokenCheckFlag();
     } else {
       setIsLoadingForm(false);
       setIsPasswordRecovery(false);
@@ -83,10 +86,7 @@ function ForgotPassword() {
     checkUrlPasswordRecoveryToken().finally();
   }, [location]);
 
-  useEffect(
-    () => localStorage.removeItem("@CAPJU: password_recovery_token_checked"),
-    []
-  );
+  useEffect(() => clearPasswordRecoveryTokenCheckFlag(0), []);
 
   const {
     register,
