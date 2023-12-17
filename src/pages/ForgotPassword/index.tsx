@@ -47,7 +47,7 @@ function ForgotPassword() {
   const [isLoadingForm, setIsLoadingForm] = useState(true);
   const [token, setToken] = useState("");
 
-  async function fetchData() {
+  async function checkUrlPasswordRecoveryToken() {
     const searchParams = new URLSearchParams(location.search);
     const urlToken = searchParams.get("token");
     if (
@@ -80,8 +80,13 @@ function ForgotPassword() {
   }
 
   useEffect(() => {
-    fetchData().finally();
+    checkUrlPasswordRecoveryToken().finally();
   }, [location]);
+
+  useEffect(
+    () => localStorage.removeItem("@CAPJU: password_recovery_token_checked"),
+    []
+  );
 
   const {
     register,
@@ -181,9 +186,8 @@ function ForgotPassword() {
         <Card p={["10", "20"]} w="90%" maxW="454">
           {/* eslint-disable-next-line no-nested-ternary */}
           {isLoadingForm ? (
-            <Flex justify="center" align="center" h="100%">
+            <Flex justify="center" align="center" h="50px">
               <ImSpinner8
-                width="50%"
                 speed="0.65s"
                 color="green.500"
                 size="xl"
