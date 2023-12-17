@@ -121,6 +121,7 @@ function ForgotPassword() {
   });
 
   const onPasswordSubmit = handleSubmitPasswordForm(async (data: any) => {
+    handleLoading(true);
     const res = await updatePasswordFromRecoveryToken(token, data.password);
     if (res.type === "success") {
       navigate("/", { replace: true });
@@ -136,6 +137,7 @@ function ForgotPassword() {
         status: "error",
       });
     }
+    handleLoading(false);
   });
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
