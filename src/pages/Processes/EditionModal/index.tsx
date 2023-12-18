@@ -51,7 +51,9 @@ export function EditionModal({
 
   const validationSchema = yup.object({
     record: yup.string().required("Digite o registro do processo."),
-    nickname: yup.string().required("Dê um apelido para o processo."),
+    nickname: yup
+      .string()
+      .max(50, "O apelido não pode ter mais que 50 caracteres."),
     idFlow: yup.number().when(() => {
       return selectedProcess?.status === "notStarted"
         ? yup.string().required("Escolha um fluxo para o processo.")
