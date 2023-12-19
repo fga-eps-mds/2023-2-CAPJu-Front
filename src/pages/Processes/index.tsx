@@ -388,9 +388,10 @@ function Processes() {
                 <Input
                   placeholder={placeholder}
                   value={filter?.value}
-                  onChange={({ target }) =>
-                    setFilter({ type: selectedFilter, value: target.value })
-                  }
+                  onChange={({ target }) => {
+                    setCurrentPage(0);
+                    setFilter({ type: selectedFilter, value: target.value });
+                  }}
                   variant="filled"
                   w="100%"
                   css={{
