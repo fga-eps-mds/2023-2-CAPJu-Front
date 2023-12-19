@@ -90,8 +90,8 @@ export default function StatsTimeStage() {
 
   const getDataChart = async () => {
     setChartData(undefined);
-    try {
-      if (idFlow) {
+    if (idFlow !== undefined) {
+      try {
         const historic = (await getHistoricFlow(idFlow)).value;
         const expected = (await getExpectedFlow(idFlow)).value;
 
@@ -103,10 +103,17 @@ export default function StatsTimeStage() {
           setChartData(resultado);
         } else {
           setBlankText("Não há dados para serem exibidos");
+          toast({
+            id: "error",
+            title: "Erro ao selecionar fluxo",
+            description: "Selecione um fluxo antes de confirmar",
+            status: "error",
+            isClosable: true,
+          });
         }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log("erro");
     }
   };
 
