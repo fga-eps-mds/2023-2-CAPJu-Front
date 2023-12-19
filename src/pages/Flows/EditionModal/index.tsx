@@ -15,7 +15,10 @@ import {
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { updateFlow } from "services/processManagement/flows";
+import {
+  updateFlow,
+  showUsersToNotify,
+} from "services/processManagement/flows";
 import { getStages } from "services/processManagement/stage";
 import { getAcceptedUsers } from "services/user";
 import { Input, MultiSelect } from "components/FormFields";
@@ -63,6 +66,16 @@ export function EditionModal({
     },
     refetchOnWindowFocus: false,
   });
+
+  const { data: usersNotifiedData } = useQuery({
+    queryKey: [`notified-users-${flow.idFlow}`],
+    queryFn: async () => {
+      const res = await showUsersToNotify(flow.idFlow);
+      return res;
+    },
+    refetchOnWindowFocus: false,
+  });
+
   const [selectedStages, setSelectedStages] = useState<Stage[]>(
     sortFlowStages(
       stagesData?.value?.filter((item) =>
@@ -71,7 +84,13 @@ export function EditionModal({
       flow.sequences
     ) || []
   );
-  const [usersToNotify, setUsersToNotify] = useState<(number | string)[]>([]);
+
+  const [usersToNotify, setUsersToNotify] = useState<(number | string)[]>(
+    usersNotifiedData && usersNotifiedData.value
+      ? usersNotifiedData?.value?.map((item) => item.cpf)
+      : []
+  );
+
   const sequences = useMemo<FlowSequence[]>(() => {
     return selectedStages.reduce(
       (acc: FlowSequence[], curr: Stage, index: number) => {
@@ -142,6 +161,15 @@ export function EditionModal({
     });
   }
 
+  function usersToSelectOption(): SelectOption[] | undefined {
+    return usersNotifiedData?.value?.map((item) => {
+      return {
+        label: `${item.fullName}`,
+        value: `${item.cpf}`,
+      };
+    });
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -201,6 +229,7 @@ export function EditionModal({
               <MultiSelect
                 label="Usuários notificados"
                 placeholder="Escolha os usuários a serem notificados"
+                defaultValue={usersToSelectOption()}
                 options={usersData?.value?.map((item: User) => {
                   return {
                     label: item.fullName,
