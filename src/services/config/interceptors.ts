@@ -7,7 +7,7 @@ export function authorization(
 
   if (!bearerTokenWithQuotes) return config;
 
-  if (!config.url?.includes("/logout"))
+  if (["/logout", "/sessionStatus"].every((url) => !config.url?.includes(url)))
     localStorage.setItem("@CAPJu:check_session_flag", "true");
 
   const bearerToken = JSON.parse(bearerTokenWithQuotes);

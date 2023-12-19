@@ -1,4 +1,5 @@
 import { api } from "services/api";
+import { Moment } from "moment";
 
 export const getProcesses = async (
   flowId: number | undefined,
@@ -91,7 +92,7 @@ export const updateProcess = async (data: {
   nickname: string;
   idFlow: number | number[];
   priority: number;
-  effectiveDate: Date | string;
+  effectiveDate: Date | string | Moment;
   status: string;
   idStage: number | null;
 }): Promise<Result<Process>> => {

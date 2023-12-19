@@ -155,9 +155,7 @@ export default function ProcessesFileComponent() {
       },
       {
         label: "Download Arquivo Resultado ",
-        icon: (
-          <Icon as={FaFileExcel} boxSize={6} style={{ marginRight: "5px" }} />
-        ),
+        icon: <Icon as={FaFileExcel} boxSize={6} />,
         actionName: "download-resulting-file",
         labelOnDisable: " Arquivo não importado",
         disabledOn: (file: ProcessesFile) =>

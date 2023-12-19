@@ -253,8 +253,7 @@ export default function Statistics() {
 
   useEffect(() => {
     if (currentFlowName !== "") {
-      handleConfirmSelectionFlow();
-      // console.log({currentFlowName})
+      handleConfirmSelectionFlow().finally();
     }
   }, [currentFlowName]);
 

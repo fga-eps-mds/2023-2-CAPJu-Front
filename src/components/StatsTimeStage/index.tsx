@@ -19,8 +19,8 @@ import "jspdf-autotable";
 import { UserOptions } from "jspdf-autotable";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { formatDateTimeToBrazilian } from "utils/dates";
 import { addLogos, constructTableHTMLData } from "utils/pdf";
+import moment from "moment";
 import { Select } from "../FormFields";
 import {
   getFlows,
@@ -118,9 +118,7 @@ export default function StatsTimeStage() {
     if (elem) {
       const container = document.createElement("div");
 
-      const emitedAt = new Date();
-
-      const emissionDate = formatDateTimeToBrazilian(emitedAt);
+      const emissionDate = moment().format("DD/MM/YYYY HH:mm:ss");
 
       const pdf = new jsPDF() as jsPDFCustom;
 

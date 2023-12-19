@@ -182,6 +182,7 @@ export function VisualizationItemsModal({
         const status = getProcessesFileItemStatusPt(processesFileItem.status);
         return {
           ...processesFileItem,
+          record: processesFileItem.record || "-",
           priority: processesFileItem.priority || "-",
           nickname: processesFileItem.nickname || "-",
           flow: processesFileItem.flow || "-",
