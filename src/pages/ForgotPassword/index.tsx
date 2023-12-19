@@ -47,21 +47,10 @@ function ForgotPassword() {
   const [isLoadingForm, setIsLoadingForm] = useState(true);
   const [token, setToken] = useState("");
 
-  const clearPasswordRecoveryTokenCheckFlag = (ms: number = 1000) => {
-    setTimeout(
-      () => localStorage.removeItem("@CAPJU: password_recovery_token_checked"),
-      ms
-    );
-  };
-
   async function checkUrlPasswordRecoveryToken() {
     const searchParams = new URLSearchParams(location.search);
     const urlToken = searchParams.get("token");
-    if (
-      urlToken &&
-      !localStorage.getItem("@CAPJU: password_recovery_token_checked")
-    ) {
-      localStorage.setItem("@CAPJU: password_recovery_token_checked", "true");
+    if (urlToken) {
       setToken(urlToken);
       const res = await checkPasswordRecoveryToken(urlToken);
       if (res.type === "error") {
@@ -70,12 +59,11 @@ function ForgotPassword() {
           description: res.error?.message || "Erro ao verificar token",
           status: "error",
         });
-        navigate("/", { replace: true });
+        navigate("/");
       } else {
         setIsPasswordRecovery(true);
         setIsLoadingForm(false);
       }
-      clearPasswordRecoveryTokenCheckFlag();
     } else {
       setIsLoadingForm(false);
       setIsPasswordRecovery(false);
@@ -85,8 +73,6 @@ function ForgotPassword() {
   useEffect(() => {
     checkUrlPasswordRecoveryToken().finally();
   }, [location]);
-
-  useEffect(() => clearPasswordRecoveryTokenCheckFlag(0), []);
 
   const {
     register,
@@ -189,7 +175,7 @@ function ForgotPassword() {
         <Card p={["10", "20"]} w="90%" maxW="454">
           {/* eslint-disable-next-line no-nested-ternary */}
           {isLoadingForm ? (
-            <Flex justify="center" align="center" h="50px">
+            <Flex justify="center" align="center" h="12vh">
               <ImSpinner8
                 speed="0.65s"
                 color="green.500"
