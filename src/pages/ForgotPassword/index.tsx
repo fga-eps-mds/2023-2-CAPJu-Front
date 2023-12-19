@@ -54,12 +54,12 @@ function ForgotPassword() {
       setToken(urlToken);
       const res = await checkPasswordRecoveryToken(urlToken);
       if (res.type === "error") {
+        navigate("/");
         toast({
           id: uuidv4(),
           description: res.error?.message || "Erro ao verificar token",
           status: "error",
         });
-        navigate("/");
       } else {
         setIsPasswordRecovery(true);
         setIsLoadingForm(false);
