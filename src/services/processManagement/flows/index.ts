@@ -40,24 +40,31 @@ export const getFlowById = async (
   }
 };
 
-export const showUsersToNotify = async (idFlow: number): Promise<Result<{
-  idFlow: Number,
-  cpf: string,
-  fullName: string,
-  email: string,
-  idUnit: Number
-}[]>> => {
+export const showUsersToNotify = async (
+  idFlow: number
+): Promise<
+  Result<
+    {
+      idFlow: Number;
+      cpf: string;
+      fullName: string;
+      email: string;
+      idUnit: Number;
+    }[]
+  >
+> => {
   try {
-    const res = await api.processManagement.get<{usersToNotify:
-      [{
-      idFlow: Number,
-      cpf: string,
-      fullName: string,
-      email: string,
-      idUnit: Number
-    }]}>(
-      `/flow/${idFlow}/usersToNotify`,
-    );
+    const res = await api.processManagement.get<{
+      usersToNotify: [
+        {
+          idFlow: Number;
+          cpf: string;
+          fullName: string;
+          email: string;
+          idUnit: Number;
+        }
+      ];
+    }>(`/flow/${idFlow}/usersToNotify`);
 
     return { type: "success", value: res.data.usersToNotify };
   } catch (error) {
@@ -81,7 +88,6 @@ export const createFlow = async (data: {
     return { type: "error", error: E, value: undefined };
   }
 };
-
 
 export const getHistoricFlow = async (idFlow: number) => {
   try {
