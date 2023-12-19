@@ -13,6 +13,8 @@ import {
   signOutExpiredSession,
   checkSessionStatus,
   logoutAsAdmin,
+  showUserByCpf,
+  updateUserFullName,
 } from "../user";
 
 const apiMockUser = new MockAdapter(api.user);
@@ -298,6 +300,67 @@ describe("Testes para a função getUserById", () => {
       type: "error",
       value: undefined,
       error: new Error("Usuario não encontrado"),
+    });
+  });
+});
+
+describe("Testes para a função showUserByCpf", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+  const cpf = "12345678901";
+
+  it("sucesso", async () => {
+    apiMockUser
+      .onGet(`/showUserByCpf/${cpf}`)
+      .reply(200, { active: true, message: "Tudo certo" });
+
+    const result = await showUserByCpf(cpf);
+
+    expect(result).toEqual({
+      type: "success",
+      value: { active: true, message: "Tudo certo" },
+    });
+  });
+
+  it("erro", async () => {
+    apiMockUser.onGet(`/showUserByCpf/${cpf}`).reply(400);
+    const result = await showUserByCpf(cpf);
+
+    expect(result).toEqual({
+      type: "error",
+      error: Error("Something went wrong"),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função updateUserFullName", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+  const cpf = "12345678901";
+  const data = { fullName: "Novo nome" };
+
+  it("sucesso", async () => {
+    apiMockUser.onPut(`/updateUserFullName/${cpf}`).reply(200, "Ok");
+
+    const result = await updateUserFullName(data, cpf);
+
+    expect(result).toEqual({
+      type: "success",
+      value: "Ok",
+    });
+  });
+
+  it("erro", async () => {
+    apiMockUser.onPut(`/updateUserFullName/${cpf}`).reply(400);
+    const result = await updateUserFullName(data, cpf);
+
+    expect(result).toEqual({
+      type: "error",
+      error: Error("Something went wrong"),
+      value: undefined,
     });
   });
 });
