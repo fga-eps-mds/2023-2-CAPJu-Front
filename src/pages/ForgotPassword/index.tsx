@@ -154,7 +154,8 @@ function ForgotPassword() {
       toast({
         id: uuidv4(),
         title: "Email enviado com sucesso!",
-        description: "Acesse seu e-mail para recuperar a senha",
+        description:
+          "Instruções para recuperação de senha enviadas com sucesso para o e-mail fornecido.",
         status: "success",
       });
       return;
