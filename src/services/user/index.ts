@@ -78,7 +78,7 @@ export const signOutExpiredSession = async (): Promise<Result<string>> => {
 
 export const checkSessionStatus = async (
   sessionId: string
-): Promise<Result<{ active: boolean; message: string }>> => {
+): Promise<Result<{ active: boolean; message: string }> | ResultError> => {
   try {
     const { active, message } = (
       await api.user.get<{ active: boolean; message: string }>(

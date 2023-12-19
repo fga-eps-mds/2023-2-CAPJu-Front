@@ -17,6 +17,7 @@ import {
 } from "services/user";
 import { useToast } from "@chakra-ui/react";
 import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
 import { SessionExpirationModal } from "../pages/User/SessionExpirationModal";
 
 type AuthContextType = {
@@ -189,17 +190,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (!sessionId) return;
 
-    const data = (await checkSessionStatus(sessionId)).value as any;
+    const result = await checkSessionStatus(sessionId);
 
     setDisableLogout(false);
 
-    if (!data.active) {
+    if (result.type === "error") {
+      toast({
+        id: uuidv4(),
+        description:
+          result.error.message || "Erro ao verificar status da sessão",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (!result.value.active) {
       clearLocalUserInfo();
       clearTimeoutsAndIntervals();
       removeMouseMoveListener();
       toast({
         id: "token-expired",
-        description: data.message || "Sessão encerrada",
+        description: result.value.message || "Sessão encerrada",
         status: "error",
         isClosable: true,
       });
@@ -214,17 +226,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await checkJwtExpiration();
     }, 3000); // Checked every 3s
 
-    sessionStatusInterval = setInterval(async () => {
-      await checkSession();
-    }, 60000); // Checked every 1mim
+    sessionStatusInterval = setInterval(
+      () => localStorage.setItem("@CAPJu:check_session_flag", "true"),
+      60000
+    ); // Checked every 1mim
 
     sessionCheckInterval = setInterval(async () => {
       if (localStorage.getItem("@CAPJu:check_session_flag")) {
-        await checkSession();
-        await checkJwtExpiration();
         localStorage.removeItem("@CAPJu:check_session_flag");
+        await checkJwtExpiration();
+        await checkSession();
       }
-    }, 500);
+    }, 1000);
 
     jwtPresenceCheckInterval = setInterval(() => {
       if (!localStorage.getItem("@CAPJu:jwt_user")) {
