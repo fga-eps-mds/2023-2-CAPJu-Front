@@ -399,15 +399,33 @@ describe("Testes para a função updateUserPassword", () => {
   afterEach(() => {
     apiMockUser.reset();
   });
+  it("updateUserPassword: sucesso", async () => {
+    const cpf = "11111111111";
+    apiMockUser
+      .onPut(`/updateUserPassword/${cpf}`, {
+        oldPassword: "senha1",
+        newPassword: "senha2",
+      })
+      .reply(200, "Ok");
+    const result = await updateUserPassword(
+      { oldPassword: "senha1", newPassword: "senha2" },
+      cpf
+    );
+
+    expect(result).toEqual({
+      type: "success",
+      value: "Ok",
+    });
+  });
 
   it("updateUserPassword: erro", async () => {
     const cpf = "11111111111";
     apiMockUser
-      .onPost(`/updateUserPassword/${cpf}`, {
+      .onPut(`/updateUserPassword/${cpf}`, {
         oldPassword: "senha1",
         newPassword: "senha2",
       })
-      .reply(400, "Ocorreu um erro");
+      .reply(400, "Something went wrong");
     const result = await updateUserPassword(
       { oldPassword: "senha1", newPassword: "senha2" },
       cpf
