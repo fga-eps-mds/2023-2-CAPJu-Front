@@ -238,7 +238,10 @@ function Flows() {
               <Input
                 placeholder="Pesquisar fluxos"
                 value={filter || ""}
-                onChange={({ target }) => setFilter(target.value)}
+                onChange={({ target }) => {
+                  setCurrentPage(0);
+                  setFilter(target.value);
+                }}
                 variant="filled"
                 css={{
                   "&, &:hover, &:focus": {
