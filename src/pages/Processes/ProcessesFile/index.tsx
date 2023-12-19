@@ -72,7 +72,7 @@ export default function ProcessesFileComponent() {
     }),
     tableColumnHelper.accessor("message", {
       cell: (info) => info.getValue(),
-      header: "Mensagem",
+      header: "Mensagens",
       meta: {
         isSortable: true,
       },
@@ -396,7 +396,6 @@ export default function ProcessesFileComponent() {
                   variant="outline"
                   colorScheme="black"
                   style={{ marginLeft: "2px" }}
-                  title="Baixar modelo csv"
                 >
                   <Icon
                     as={FaFileCsv}
@@ -457,6 +456,13 @@ export default function ProcessesFileComponent() {
           </Flex>
         </Flex>
       </Flex>
+      {processesFileTablePaginationInfo?.totalPages ? (
+        <Pagination
+          pageCount={processesFileTablePaginationInfo?.totalPages}
+          onPageChange={refetchProcessesFile}
+          style={{ marginBottom: "10px" }}
+        />
+      ) : null}
       <DataTable
         style={{ tableLayout: "fixed", maxWidth: "100%" }}
         width="100%"
@@ -467,12 +473,7 @@ export default function ProcessesFileComponent() {
         isDataFetching={!isUserFetched || isFetchingFiles}
         emptyTableMessage="Não foram encontrados lotes"
       />
-      {processesFileTablePaginationInfo?.totalPages ? (
-        <Pagination
-          pageCount={processesFileTablePaginationInfo?.totalPages}
-          onPageChange={refetchProcessesFile}
-        />
-      ) : null}
+
       {selectedFile && isDeletionOpen && (
         <DeletionModal
           processesFile={selectedFile}

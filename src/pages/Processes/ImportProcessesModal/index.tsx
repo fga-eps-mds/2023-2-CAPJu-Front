@@ -33,7 +33,7 @@ const validationSchema = yup.object({
     .mixed()
     .test(
       "fileType",
-      "Formato inválido. Insira um .xlsx ou .xls.",
+      "Formato inválido. Insira um .xlsx, .xls ou .csv.",
       (value: any) => {
         if (!value) return false;
         const allowedTypes = [

@@ -236,12 +236,7 @@ export function Header() {
                         colorScheme="red"
                         leftIcon={<MdLogout color="black" />}
                         justifyContent="flex-start"
-                        onClick={() => {
-                          handleLogout();
-                          navigate("/");
-                          setIsOpen(false);
-                          setTabIndex(-1);
-                        }}
+                        onClick={() => handleLogout()}
                         isDisabled={!allowLogout()}
                       >
                         <Flex alignItems="center">

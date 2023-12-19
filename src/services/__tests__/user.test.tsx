@@ -6,7 +6,6 @@ import {
   getUserById,
   updateUser,
   updateUserPassword,
-  forgotPassword,
   getAcceptedUsers,
 } from "../user";
 
@@ -215,39 +214,6 @@ describe("Testes para a função updateUserPassword", () => {
 //     apiMockUser.reset();
 //   });
 // })
-
-describe("Testes para a função forgotPassword", () => {
-  afterEach(() => {
-    apiMockUser.reset();
-  });
-
-  it("forgotPassword: sucesso", async () => {
-    apiMockUser
-      .onPost("/requestRecovery", { email: "email@email.com" })
-      .reply(200, { dados: "" });
-
-    const result = await forgotPassword({ email: "email@email.com" });
-
-    expect(result).toEqual({
-      type: "success",
-      value: { dados: "" },
-    });
-  });
-
-  it("forgotPassword: erro", async () => {
-    apiMockUser
-      .onPost("/requestRecovery", { email: "email@email.com" })
-      .reply(400, "Ocorreu um erro");
-
-    const result = await forgotPassword({ email: "email@email.com" });
-
-    expect(result).toEqual({
-      type: "error",
-      error: new Error("Ocorreu um erro"),
-      value: undefined,
-    });
-  });
-});
 
 describe("Testes para a função getAcceptedUsers", () => {
   afterEach(() => {

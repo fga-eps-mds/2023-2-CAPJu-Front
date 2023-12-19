@@ -208,7 +208,7 @@ function AccountEdition() {
     }
 
     if (hasChanges) {
-      handleLogout();
+      setTimeout(() => handleLogout(), 1000);
     } else {
       toast({
         id: "login-error",
@@ -271,6 +271,11 @@ function AccountEdition() {
                   defaultValue={user?.email}
                   errors={errors.email}
                   {...register("email")}
+                  readOnly
+                  onFocus={(e) => e.currentTarget.removeAttribute("readOnly")}
+                  onBlur={(e) =>
+                    e.currentTarget.setAttribute("readOnly", "true")
+                  }
                 />
                 <Input
                   type="text"
@@ -278,6 +283,11 @@ function AccountEdition() {
                   placeholder="exemplo@email.com"
                   errors={errors.newEmail}
                   {...register("newEmail")}
+                  readOnly
+                  onFocus={(e) => e.currentTarget.removeAttribute("readOnly")}
+                  onBlur={(e) =>
+                    e.currentTarget.setAttribute("readOnly", "true")
+                  }
                 />
               </Flex>
               <Flex
@@ -301,9 +311,6 @@ function AccountEdition() {
                     type={showPassword ? "text" : "password"}
                     label="Nova senha"
                     placeholder="Crie uma nova senha"
-                    readOnly // These two lines avoid the autofilling of the password input
-                    onFocus={(e) => e.target.removeAttribute("readOnly")}
-                    // errors={errors.newPassword}
                     infoText={
                       <Stack spacing="0">
                         <Text>Deve conter ao menos um dígito;</Text>
@@ -315,6 +322,11 @@ function AccountEdition() {
                       </Stack>
                     }
                     {...register("newPassword")}
+                    readOnly
+                    onFocus={(e) => e.currentTarget.removeAttribute("readOnly")}
+                    onBlur={(e) =>
+                      e.currentTarget.setAttribute("readOnly", "true")
+                    }
                   />
                   <InputRightElement>
                     <IconButton
@@ -337,7 +349,10 @@ function AccountEdition() {
                     errors={errors.newPasswordConfirmation}
                     {...register("newPasswordConfirmation")}
                     readOnly
-                    onFocus={(e) => e.target.removeAttribute("readOnly")}
+                    onFocus={(e) => e.currentTarget.removeAttribute("readOnly")}
+                    onBlur={(e) =>
+                      e.currentTarget.setAttribute("readOnly", "true")
+                    }
                   />
                   <InputRightElement>
                     <IconButton
@@ -372,7 +387,10 @@ function AccountEdition() {
                   errors={errors.oldPassword}
                   {...register("oldPassword")}
                   readOnly
-                  onFocus={(e) => e.target.removeAttribute("readOnly")}
+                  onFocus={(e) => e.currentTarget.removeAttribute("readOnly")}
+                  onBlur={(e) =>
+                    e.currentTarget.setAttribute("readOnly", "true")
+                  }
                 />
                 <InputRightElement>
                   <IconButton
