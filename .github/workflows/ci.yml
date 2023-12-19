@@ -24,6 +24,8 @@ jobs:
             ${{ runner.os }}-vite-${{ hashFiles('**/yarn.lock') }}-
 
       - name: 🧰 Instala bibliotecas e dependências
+        timeout-minutes: 1
+        continue-on-error: true
         run: npm i yarn -g && yarn
 
       - name: 🔍 Verifica estilização do código
