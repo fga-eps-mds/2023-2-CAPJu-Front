@@ -88,7 +88,7 @@ function ForgotPassword() {
       .string()
       .required("Preencha a senha")
       .matches(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z$*&@#]{6,}$/,
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
         "Senha não cumpre critérios"
       ),
     passwordConfirmation: yup
