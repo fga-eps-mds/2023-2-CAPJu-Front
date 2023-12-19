@@ -9,6 +9,7 @@ import {
   getAcceptedUsers,
   findAllSessionsPaged,
   checkPasswordValidity,
+  signOut,
 } from "../user";
 
 const apiMockUser = new MockAdapter(api.user);
@@ -111,6 +112,34 @@ describe("Testes para a função signUp", () => {
     expect(result).toEqual({
       type: "error",
       error: new Error("Erro ao criar usuário"),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função signOut", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+  const logoutInitiator = "string";
+
+  it("sucesso", async () => {
+    apiMockUser.onPost(`/logout/${logoutInitiator}`).reply(200);
+
+    const result = await signOut(logoutInitiator);
+
+    expect(result).toEqual({ type: "success", value: "" });
+  });
+
+  it("erro", async () => {
+    apiMockUser
+      .onPost(`/logout/${logoutInitiator}`)
+      .reply(400, "Ocorreu um erro");
+    const result = await signOut(logoutInitiator);
+
+    expect(result).toEqual({
+      type: "error",
+      error: Error("Ocorreu um erro"),
       value: undefined,
     });
   });
