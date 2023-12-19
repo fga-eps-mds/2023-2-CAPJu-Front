@@ -8,6 +8,7 @@ import {
   updateUserPassword,
   getAcceptedUsers,
   findAllSessionsPaged,
+  checkPasswordValidity,
 } from "../user";
 
 const apiMockUser = new MockAdapter(api.user);
@@ -34,6 +35,40 @@ describe("Testes para a função signIn", () => {
     expect(result).toEqual({
       type: "error",
       error: new Error("Invalid credentials"),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função checkPasswordValidity", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+  const credentials = {
+    cpf: "12345678901",
+    password: "senha",
+  };
+
+  it("sucesso", async () => {
+    apiMockUser
+      .onPost("/checkPasswordValidity", credentials)
+      .reply(200, "dados");
+
+    const result = await checkPasswordValidity(credentials);
+
+    expect(result).toEqual({ type: "success", value: "dados" });
+  });
+
+  it("erro", async () => {
+    apiMockUser
+      .onPost("/checkPasswordValidity", credentials)
+      .reply(400, "Ocorreu um erro");
+
+    const result = await checkPasswordValidity(credentials);
+
+    expect(result).toEqual({
+      type: "error",
+      error: Error("Ocorreu um erro"),
       value: undefined,
     });
   });
