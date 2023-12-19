@@ -24,6 +24,7 @@ import { useLoading } from "hooks/useLoading";
 import { getPriorities } from "services/processManagement/priority";
 import { getFlows } from "services/processManagement/flows";
 import { updateProcess } from "services/processManagement/processes";
+import moment from "moment-timezone";
 
 type FormValues = {
   record: string;
@@ -133,7 +134,7 @@ export function EditionModal({
       nickname: formData.nickname,
       idFlow: formData.idFlow,
       priority: formData.hasLegalPriority ? formData.idPriority : 0,
-      effectiveDate: new Date(),
+      effectiveDate: moment().tz("America/Sao_Paulo"),
     };
 
     const res = await updateProcess(body);

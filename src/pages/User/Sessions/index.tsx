@@ -170,14 +170,16 @@ function UserSessions() {
           mb="4"
           mt="50px"
         >
-          <Flex w="100%" mb="2" justifyContent="start" alignItems="baseline">
+          <Flex
+            w="100%"
+            mb="2"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             {" "}
-            {/* Add alignItems here */}
             <Text fontSize="25px" fontWeight="semibold">
               Sessões Usuários
             </Text>
-          </Flex>
-          <Flex mb="15px">
             <chakra.form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -226,6 +228,7 @@ function UserSessions() {
               </Button>
             </chakra.form>
           </Flex>
+          <Flex mb="5px" />
         </Flex>
         <DataTable
           maxWidth="1140"

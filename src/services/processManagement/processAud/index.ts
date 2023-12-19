@@ -5,6 +5,7 @@ import { formatDateTimeToBrazilian } from "../../../utils/dates";
 import { getUserInfo } from "../../../utils/user";
 import { downloadFileFromBuffer } from "../../../utils/file";
 import { addLogos } from "../../../utils/pdf";
+import moment from "moment-timezone";
 
 const processAudUrl = "processAud";
 
@@ -65,9 +66,9 @@ export const downloadEventsPdf = async (processInfo: {
     // eslint-disable-next-line new-cap
     const pdf = new jsPDF();
 
-    const emitedAt = new Date();
-
-    const emissionDate = formatDateTimeToBrazilian(emitedAt);
+    const emissionDate = moment()
+      .tz("America/Sao_Paulo")
+      .format("DD/MM/YYYY HH:mm:ss");
 
     pdf.setFontSize(12);
     pdf.text("Histórico de eventos", 105, 20, { align: "center" });
