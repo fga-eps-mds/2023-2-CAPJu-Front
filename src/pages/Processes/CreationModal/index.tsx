@@ -51,7 +51,6 @@ const validationSchema = yup.object({
   record: yup.string().required("Digite o registro do processo."),
   nickname: yup
     .string()
-    .required("Dê um apelido para o processo.")
     .max(50, "O apelido não pode ter mais que 50 caracteres."),
   idFlow: yup
     .number()
@@ -98,7 +97,7 @@ export function CreationModal({
       else if (externalProcess?.flow) {
         const { value } = res;
         const externalFlow = value.find(
-          (f) => f.name === externalProcess?.flow
+          (f) => f.name === externalProcess?.flow?.trim()
         );
         if (externalFlow?.idFlow) setValue("idFlow", externalFlow?.idFlow);
       }

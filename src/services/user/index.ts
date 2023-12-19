@@ -196,14 +196,51 @@ export const updateUserEmailAndPassword = async (
   }
 };
 
-export const forgotPassword = async (data: { email: string }) => {
+export const requestPasswordRecovery = async (email: string) => {
   try {
-    const res = await api.user.post("/requestRecovery", data);
+    const { protocol, hostname, port } = window.location;
+    let baseUrl = `${protocol}//${hostname}`;
+    if (port) {
+      baseUrl += `:${port}`;
+    }
+    const res = await api.user.post("/requestPasswordRecovery", {
+      email,
+      baseUrl,
+    });
 
     return { type: "success", value: res.data };
   } catch (error) {
     const E: Error = error as Error;
+    return { type: "error", error: E, value: undefined };
+  }
+};
 
+export const checkPasswordRecoveryToken = async (token: string) => {
+  try {
+    const res = await api.user.get<{ valid: boolean; message: string }>(
+      `/checkPasswordRecoveryToken/${token}`
+    );
+
+    return { type: "success", value: res.data };
+  } catch (error) {
+    const E: Error = error as Error;
+    return { type: "error", error: E, value: undefined };
+  }
+};
+
+export const updatePasswordFromRecoveryToken = async (
+  token: string,
+  password: string
+) => {
+  try {
+    const res = await api.user.put("/updatePasswordFromRecoveryToken", {
+      token,
+      password,
+    });
+
+    return { type: "success", value: res.data };
+  } catch (error) {
+    const E: Error = error as Error;
     return { type: "error", error: E, value: undefined };
   }
 };

@@ -7,9 +7,14 @@ interface PaginationProps {
   pageCount: number;
   // eslint-disable-next-line no-unused-vars
   onPageChange: (selectedPage: { selected: number }) => void;
+  style?: any;
 }
 
-export function Pagination({ pageCount, onPageChange }: PaginationProps) {
+export function Pagination({
+  pageCount,
+  onPageChange,
+  style,
+}: PaginationProps) {
   const [, setCurrentPage] = useState(0);
 
   const handlePageChange = (selectedPage: { selected: number }) => {
@@ -18,7 +23,9 @@ export function Pagination({ pageCount, onPageChange }: PaginationProps) {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div
+      style={{ display: "flex", justifyContent: "center", ...(style || {}) }}
+    >
       <ReactPaginate
         previousLabel="Anterior"
         nextLabel="Próximo"

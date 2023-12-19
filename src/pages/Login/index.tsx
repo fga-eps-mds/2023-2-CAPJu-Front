@@ -139,9 +139,7 @@ function Login() {
             <Button colorScheme="green" w="100%" type="submit">
               Entrar
             </Button>
-            <Link href="/recuperar-senha" style={{ display: "none" }}>
-              Esqueceu sua senha?
-            </Link>
+            <Link href="/recuperar-senha">Esqueceu sua senha?</Link>
           </chakra.form>
         </CardBody>
       </Card>

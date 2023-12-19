@@ -179,16 +179,12 @@ export function VisualizationItemsModal({
       setRawItems(data);
       const rows = (data || []).map((item) => {
         const processesFileItem = { ...item };
-        // @ts-ignore
-        Object.keys(processesFileItem).forEach(
-          // eslint-disable-next-line no-return-assign
-          (key) =>
-            // @ts-ignore
-            !processesFileItem[key] && (processesFileItem[key] = "-")
-        );
         const status = getProcessesFileItemStatusPt(processesFileItem.status);
         return {
           ...processesFileItem,
+          priority: processesFileItem.priority || "-",
+          nickname: processesFileItem.nickname || "-",
+          flow: processesFileItem.flow || "-",
           message: (
             <>
               {processesFileItem.message ? (
@@ -240,7 +236,7 @@ export function VisualizationItemsModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="6xl" colorScheme="red">
       <ModalOverlay backdropFilter="blur(12px)" />
-      <ModalContent backgroundColor="#E2E8F0">
+      <ModalContent backgroundColor="#E2E8F0" maxWidth="80%">
         <ModalHeader
           fontSize="25px"
           display="flex"
@@ -302,6 +298,13 @@ export function VisualizationItemsModal({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+          {![undefined, 0].includes(paginationInfo?.totalPages) ? (
+            <Pagination
+              pageCount={paginationInfo?.totalPages as number}
+              onPageChange={refetchItems}
+              style={{ marginBottom: "10px" }}
+            />
+          ) : null}
           <DataTable
             style={{ tableLayout: "fixed", maxWidth: "100%" }}
             maxWidth="unset"
@@ -315,12 +318,7 @@ export function VisualizationItemsModal({
               processesFile.name || processesFile.fileName
             }.`}
           />
-          {![undefined, 0].includes(paginationInfo?.totalPages) ? (
-            <Pagination
-              pageCount={paginationInfo?.totalPages as number}
-              onPageChange={refetchItems}
-            />
-          ) : null}
+
           {fileItemSelected && isCreationOpen && (
             <CreationModal
               isOpen={isCreationOpen}
