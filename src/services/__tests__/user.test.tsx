@@ -7,6 +7,7 @@ import {
   updateUser,
   updateUserPassword,
   getAcceptedUsers,
+  findAllSessionsPaged,
 } from "../user";
 
 const apiMockUser = new MockAdapter(api.user);
@@ -280,6 +281,55 @@ describe("Testes para a função getAcceptedUsers", () => {
       .reply(400, "Ocorreu um erro");
 
     const result = await getAcceptedUsers();
+    expect(result).toEqual({
+      type: "error",
+      value: undefined,
+      error: new Error("Ocorreu um erro"),
+    });
+  });
+});
+
+describe("Testes para a função findAllSessionsPaged", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  it("findAllSessionsPaged: sucess | empty nameOrEmailOrCpf", async () => {
+    // const nameOrEmailOrCpf=""
+
+    apiMockUser
+      .onGet("sessions/findAllPaged", { limit: undefined, offset: 0 })
+      .reply(200, { UserAccessLog: [{ id: 1 }] });
+
+    const result = await findAllSessionsPaged(undefined, "");
+    expect(result).toEqual({
+      type: "success",
+      value: { UserAccessLog: [{ id: 1 }] },
+      // error: new Error("Ocorreu um erro"),
+    });
+  });
+
+  it("findAllSessionsPaged: sucess | non empty nameOrEmailOrCpf", async () => {
+    // const nameOrEmailOrCpf=""
+
+    apiMockUser
+      .onGet("sessions/findAllPaged", { limit: undefined, offset: 0 })
+      .reply(200, { UserAccessLog: [{ id: 1, name: "João" }] });
+
+    const result = await findAllSessionsPaged(undefined, "joão");
+    expect(result).toEqual({
+      type: "success",
+      value: { UserAccessLog: [{ id: 1, name: "João" }] },
+      // error: new Error("Ocorreu um erro"),
+    });
+  });
+
+  it("findAllSessionsPaged: erro", async () => {
+    apiMockUser
+      .onGet("sessions/findAllPaged", { limit: undefined, offset: 0 })
+      .reply(400, "Ocorreu um erro");
+
+    const result = await findAllSessionsPaged();
     expect(result).toEqual({
       type: "error",
       value: undefined,
