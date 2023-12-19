@@ -206,9 +206,10 @@ function Units() {
               <Input
                 placeholder="Pesquisar unidades"
                 value={filter?.value}
-                onChange={({ target }) =>
-                  setFilter({ type: "unit", value: target.value })
-                }
+                onChange={({ target }) => {
+                  setCurrentPage(0);
+                  setFilter({ type: "unit", value: target.value });
+                }}
                 variant="filled"
                 css={{
                   "&, &:hover, &:focus": {
