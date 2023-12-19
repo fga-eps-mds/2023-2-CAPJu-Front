@@ -10,6 +10,7 @@ import {
   findAllSessionsPaged,
   checkPasswordValidity,
   signOut,
+  signOutExpiredSession,
 } from "../user";
 
 const apiMockUser = new MockAdapter(api.user);
@@ -140,6 +141,31 @@ describe("Testes para a função signOut", () => {
     expect(result).toEqual({
       type: "error",
       error: Error("Ocorreu um erro"),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função signOutExpiredSession", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  it("sucesso", async () => {
+    apiMockUser.onPost(`/logoutExpiredSession`).reply(200);
+
+    const result = await signOutExpiredSession();
+
+    expect(result).toEqual({ type: "success", value: "" });
+  });
+
+  it("erro", async () => {
+    apiMockUser.onPost(`/logoutExpiredSession}`).reply(400);
+    const result = await signOutExpiredSession();
+
+    expect(result).toEqual({
+      type: "error",
+      error: Error("Something went wrong"),
       value: undefined,
     });
   });
