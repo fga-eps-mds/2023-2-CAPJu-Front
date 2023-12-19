@@ -15,6 +15,14 @@ import {
   logoutAsAdmin,
   showUserByCpf,
   updateUserFullName,
+  updateUserRole,
+  deleteUser,
+  denyRequest,
+  acceptRequest,
+  checkPasswordRecoveryToken,
+  requestPasswordRecovery,
+  updateUserEmailAndPassword,
+  updatePasswordFromRecoveryToken,
 } from "../user";
 
 const apiMockUser = new MockAdapter(api.user);
@@ -446,6 +454,141 @@ describe("Testes para a função updateUserPassword", () => {
 //   });
 // })
 
+describe("Testes para a função updateUserEmailAndPassword", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  const cpf = "12345678901";
+  const data = { email: "novoemail@example.com", password: "novasenha" };
+
+  it("deve atualizar o email e a senha com sucesso", async () => {
+    apiMockUser
+      .onPut(`/updateUserEmailAndPassword/${cpf}`)
+      .reply(200, "Email e senha atualizados com sucesso");
+
+    const result = await updateUserEmailAndPassword(data, cpf);
+
+    expect(result).toEqual({
+      type: "success",
+      value: "Email e senha atualizados com sucesso",
+    });
+  });
+
+  it("deve lidar com erro ao tentar atualizar o email e a senha", async () => {
+    apiMockUser.onPut(`/updateUserEmailAndPassword/${cpf}`).reply(500);
+
+    const result = await updateUserEmailAndPassword(data, cpf);
+
+    expect(result).toEqual({
+      type: "error",
+      error: expect.any(Error),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função requestPasswordRecovery", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  const email = "usuario@example.com";
+
+  it("deve enviar uma solicitação de recuperação de senha com sucesso", async () => {
+    apiMockUser
+      .onPost("/requestPasswordRecovery")
+      .reply(200, "Solicitação enviada com sucesso");
+
+    const result = await requestPasswordRecovery(email);
+
+    expect(result).toEqual({
+      type: "success",
+      value: "Solicitação enviada com sucesso",
+    });
+  });
+
+  it("deve lidar com erro ao tentar enviar uma solicitação de recuperação de senha", async () => {
+    apiMockUser.onPost("/requestPasswordRecovery").reply(500);
+
+    const result = await requestPasswordRecovery(email);
+
+    expect(result).toEqual({
+      type: "error",
+      error: expect.any(Error),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função checkPasswordRecoveryToken", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  const token = "abc123";
+
+  it("deve verificar o token de recuperação de senha com sucesso", async () => {
+    const responseData = { valid: true, message: "Token válido" };
+    apiMockUser
+      .onGet(`/checkPasswordRecoveryToken/${token}`)
+      .reply(200, responseData);
+
+    const result = await checkPasswordRecoveryToken(token);
+
+    expect(result).toEqual({
+      type: "success",
+      value: responseData,
+    });
+  });
+
+  it("deve lidar com erro ao verificar o token de recuperação de senha", async () => {
+    apiMockUser.onGet(`/checkPasswordRecoveryToken/${token}`).reply(500);
+
+    const result = await checkPasswordRecoveryToken(token);
+
+    expect(result).toEqual({
+      type: "error",
+      error: expect.any(Error),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função updatePasswordFromRecoveryToken", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  const token = "abc123";
+  const password = "novaSenha";
+
+  it("deve atualizar a senha com sucesso", async () => {
+    apiMockUser
+      .onPut("/updatePasswordFromRecoveryToken")
+      .reply(200, "Senha atualizada com sucesso");
+
+    const result = await updatePasswordFromRecoveryToken(token, password);
+
+    expect(result).toEqual({
+      type: "success",
+      value: "Senha atualizada com sucesso",
+    });
+  });
+
+  it("deve lidar com erro ao tentar atualizar a senha", async () => {
+    apiMockUser.onPut("/updatePasswordFromRecoveryToken").reply(500);
+
+    const result = await updatePasswordFromRecoveryToken(token, password);
+
+    expect(result).toEqual({
+      type: "error",
+      error: expect.any(Error),
+      value: undefined,
+    });
+  });
+});
+
 describe("Testes para a função getAcceptedUsers", () => {
   afterEach(() => {
     apiMockUser.reset();
@@ -515,6 +658,131 @@ describe("Testes para a função getAcceptedUsers", () => {
       type: "error",
       value: undefined,
       error: new Error("Ocorreu um erro"),
+    });
+  });
+});
+
+describe("Testes para a função acceptRequest", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  const userId = "123";
+
+  it("deve aceitar a solicitação com sucesso", async () => {
+    apiMockUser.onPost(`/acceptRequest/${userId}`).reply(200);
+
+    const result = await acceptRequest(userId);
+
+    expect(result).toEqual({
+      type: "success",
+      value: null,
+    });
+  });
+
+  it("deve lidar com erro ao tentar aceitar a solicitação", async () => {
+    apiMockUser.onPost(`/acceptRequest/${userId}`).reply(500);
+
+    const result = await acceptRequest(userId);
+
+    expect(result).toEqual({
+      type: "error",
+      error: expect.any(Error),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função denyRequest", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  const userId = "123";
+
+  it("deve negar a solicitação com sucesso", async () => {
+    apiMockUser.onDelete(`/deleteRequest/${userId}`).reply(200);
+
+    const result = await denyRequest(userId);
+
+    expect(result).toEqual({
+      type: "success",
+      value: null,
+    });
+  });
+
+  it("deve lidar com erro ao tentar negar a solicitação", async () => {
+    apiMockUser.onDelete(`/deleteRequest/${userId}`).reply(500);
+
+    const result = await denyRequest(userId);
+
+    expect(result).toEqual({
+      type: "error",
+      error: expect.any(Error),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função deleteUser", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  const userId = "123";
+
+  it("deve excluir o usuário com sucesso", async () => {
+    apiMockUser.onDelete(`/deleteUser/${userId}`).reply(200);
+
+    const result = await deleteUser(userId);
+
+    expect(result).toEqual({
+      type: "success",
+      value: null,
+    });
+  });
+
+  it("deve lidar com erro ao tentar excluir o usuário", async () => {
+    apiMockUser.onDelete(`/deleteUser/${userId}`).reply(500);
+
+    const result = await deleteUser(userId);
+
+    expect(result).toEqual({
+      type: "error",
+      error: expect.any(Error),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função updateUserRole", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+
+  const cpf = "12345678901";
+  const idRole = 1;
+
+  it("deve atualizar o papel com sucesso", async () => {
+    apiMockUser.onPut(`/updateUserRole/`).reply(200);
+
+    const result = await updateUserRole(cpf, idRole);
+
+    expect(result).toEqual({
+      type: "success",
+      value: null,
+    });
+  });
+
+  it("deve lidar com erro ao tentar atualizar o papel", async () => {
+    apiMockUser.onPut(`/updateUserRole/`).reply(500);
+
+    const result = await updateUserRole(cpf, idRole);
+
+    expect(result).toEqual({
+      type: "error",
+      error: expect.any(Error),
+      value: undefined,
     });
   });
 });
