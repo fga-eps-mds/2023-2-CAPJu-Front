@@ -4,7 +4,7 @@ import { Data } from "components/StatsTimeStage";
 import type { UserOptions } from "jspdf-autotable";
 import html2canvas from "html2canvas";
 import "jspdf-autotable";
-import moment from "moment-timezone";
+import moment from "moment";
 import assets from "./assets";
 
 interface jsPDFCustom extends JsPDF {
@@ -20,9 +20,7 @@ export const downloadProcess = async (
   try {
     const container = document.createElement("div");
 
-    const emissionDate = moment()
-      .tz("America/Sao_Paulo")
-      .format("DD/MM/YYYY HH:mm:ss");
+    const emissionDate = moment().format("DD/MM/YYYY HH:mm:ss");
 
     const pdf = new JsPDF() as jsPDFCustom;
     pdf.setFontSize(12);
@@ -66,9 +64,7 @@ export const downloadProcessInDue = async (
   try {
     const container = document.createElement("div");
 
-    const emissionDate = moment()
-      .tz("America/Sao_Paulo")
-      .format("DD/MM/YYYY HH:mm:ss");
+    const emissionDate = moment().format("DD/MM/YYYY HH:mm:ss");
 
     const pdf = new JsPDF() as jsPDFCustom;
     pdf.setFontSize(12);
@@ -124,9 +120,7 @@ export const downloadPDFQuantityProcesses = async (
   try {
     const container = document.createElement("div");
 
-    const emissionDate = moment()
-      .tz("America/Sao_Paulo")
-      .format("DD/MM/YYYY HH:mm:ss");
+    const emissionDate = moment().format("DD/MM/YYYY HH:mm:ss");
 
     const pdf = new JsPDF() as jsPDFCustom;
     pdf.setFontSize(12);

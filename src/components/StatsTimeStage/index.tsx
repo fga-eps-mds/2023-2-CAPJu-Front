@@ -20,7 +20,7 @@ import { UserOptions } from "jspdf-autotable";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { addLogos, constructTableHTMLData } from "utils/pdf";
-import moment from "moment-timezone";
+import moment from "moment";
 import { Select } from "../FormFields";
 import {
   getFlows,
@@ -118,9 +118,7 @@ export default function StatsTimeStage() {
     if (elem) {
       const container = document.createElement("div");
 
-      const emissionDate = moment()
-        .tz("America/Sao_Paulo")
-        .format("DD/MM/YYYY HH:mm:ss");
+      const emissionDate = moment().format("DD/MM/YYYY HH:mm:ss");
 
       const pdf = new jsPDF() as jsPDFCustom;
 

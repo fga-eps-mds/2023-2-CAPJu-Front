@@ -1,5 +1,5 @@
 import { jsPDF } from "jspdf";
-import moment from "moment-timezone";
+import moment from "moment";
 import { api } from "../../api";
 import "jspdf-autotable";
 import { formatDateTimeToBrazilian } from "../../../utils/dates";
@@ -66,9 +66,7 @@ export const downloadEventsPdf = async (processInfo: {
     // eslint-disable-next-line new-cap
     const pdf = new jsPDF();
 
-    const emissionDate = moment()
-      .tz("America/Sao_Paulo")
-      .format("DD/MM/YYYY HH:mm:ss");
+    const emissionDate = moment().format("DD/MM/YYYY HH:mm:ss");
 
     pdf.setFontSize(12);
     pdf.text("Histórico de eventos", 105, 20, { align: "center" });

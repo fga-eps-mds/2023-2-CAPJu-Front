@@ -16,7 +16,7 @@ import {
   signOutExpiredSession,
 } from "services/user";
 import { useToast } from "@chakra-ui/react";
-import moment from "moment-timezone";
+import moment from "moment";
 import { SessionExpirationModal } from "../pages/User/SessionExpirationModal";
 
 type AuthContextType = {
@@ -162,7 +162,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   async function checkJwtExpiration() {
-    const currentTimeInSeconds = moment().tz("America/Sao_Paulo").unix();
+    const currentTimeInSeconds = moment().unix();
     const tokenExpirationTime = getJwtFromLocalStorageDecoded().exp;
     const oneMinuteBeforeExpiration = tokenExpirationTime - 60;
     if (currentTimeInSeconds >= oneMinuteBeforeExpiration) {
