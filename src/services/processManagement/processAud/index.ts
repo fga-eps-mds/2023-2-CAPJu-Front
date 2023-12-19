@@ -1,11 +1,11 @@
 import { jsPDF } from "jspdf";
+import moment from "moment-timezone";
 import { api } from "../../api";
 import "jspdf-autotable";
 import { formatDateTimeToBrazilian } from "../../../utils/dates";
 import { getUserInfo } from "../../../utils/user";
 import { downloadFileFromBuffer } from "../../../utils/file";
 import { addLogos } from "../../../utils/pdf";
-import moment from "moment-timezone";
 
 const processAudUrl = "processAud";
 

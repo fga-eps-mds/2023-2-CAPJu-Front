@@ -5,7 +5,7 @@ services:
     container_name: capju-front
     entrypoint: /bin/sh
     ports:
-      - 3422:3000
+      - 3000:3000
     working_dir: /srv/app
     volumes:
       - type: bind

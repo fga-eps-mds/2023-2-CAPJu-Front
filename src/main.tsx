@@ -2,7 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 
-const isProduction = () => window.location.hostname !== "localhost"; // This should be replaced with a .env evalution
+const isProduction = () => window.location.hostname !== "localhost"; // This should be replaced with a .env evaluation
 
 const app = isProduction() ? (
   <App />
@@ -12,4 +12,4 @@ const app = isProduction() ? (
   </React.StrictMode>
 );
 
-createRoot(document.getElementById("root") as HTMLElement).render(<App />);
+createRoot(document.getElementById("root") as HTMLElement).render(app);
