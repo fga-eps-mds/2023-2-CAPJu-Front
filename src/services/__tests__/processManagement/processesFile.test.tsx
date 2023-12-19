@@ -24,9 +24,8 @@ describe("Testes para a função importFile", () => {
   const data = { file: mockFile, name: "Nome do Arquivo" };
 
   it("deve importar um arquivo com sucesso", async () => {
-    const responseData = {
-      /* estrutura esperada do arquivo retornado pela API */
-    };
+    const responseData = { message: "ok" };
+
     apiMock.onPost("/processesFile/newFile").reply(200, responseData);
 
     const result = await importFile(data);
@@ -74,9 +73,8 @@ describe("Testes para a função findFileById", () => {
   const idProcessesFile = 123;
 
   it("deve encontrar o arquivo com sucesso (resulting=false, format=xlsx)", async () => {
-    const responseData = {
-      /* estrutura esperada do arquivo retornado pela API */
-    };
+    const responseData = { message: "ok" };
+
     apiMock
       .onGet(
         `/processesFile/findFileById/${idProcessesFile}?original=true&format=xlsx`
@@ -92,9 +90,8 @@ describe("Testes para a função findFileById", () => {
   });
 
   it("deve encontrar o arquivo com sucesso (resulting=true, format=pdf)", async () => {
-    const responseData = {
-      /* estrutura esperada do arquivo retornado pela API */
-    };
+    const responseData = { message: "ok" };
+
     apiMock
       .onGet(
         `/processesFile/findFileById/${idProcessesFile}?original=false&format=pdf`
@@ -243,9 +240,7 @@ describe("Testes para a função updateFileItemById", () => {
   });
 
   const idProcessesFileItem = 456;
-  const data = {
-    /* estrutura esperada dos dados para atualização */
-  };
+  const data = {};
 
   it("deve atualizar um item de arquivo com sucesso", async () => {
     const responseData = 123;
