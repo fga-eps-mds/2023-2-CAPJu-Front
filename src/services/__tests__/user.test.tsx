@@ -11,6 +11,8 @@ import {
   checkPasswordValidity,
   signOut,
   signOutExpiredSession,
+  checkSessionStatus,
+  logoutAsAdmin,
 } from "../user";
 
 const apiMockUser = new MockAdapter(api.user);
@@ -162,6 +164,63 @@ describe("Testes para a função signOutExpiredSession", () => {
   it("erro", async () => {
     apiMockUser.onPost(`/logoutExpiredSession}`).reply(400);
     const result = await signOutExpiredSession();
+
+    expect(result).toEqual({
+      type: "error",
+      error: Error("Something went wrong"),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função checkSessionStatus", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+  const sessionId = "string";
+
+  it("sucesso", async () => {
+    apiMockUser
+      .onGet(`/sessionStatus/${sessionId}`)
+      .reply(200, { active: true, message: "Tudo certo" });
+
+    const result = await checkSessionStatus(sessionId);
+
+    expect(result).toEqual({
+      type: "success",
+      value: { active: true, message: "Tudo certo" },
+    });
+  });
+
+  it("erro", async () => {
+    apiMockUser.onGet(`/sessionStatus/${sessionId}`).reply(400);
+    const result = await checkSessionStatus(sessionId);
+
+    expect(result).toEqual({
+      type: "error",
+      error: Error("Something went wrong"),
+      value: undefined,
+    });
+  });
+});
+
+describe("Testes para a função logoutAsAdmin", () => {
+  afterEach(() => {
+    apiMockUser.reset();
+  });
+  const sessionId = "string";
+
+  it("sucesso", async () => {
+    apiMockUser.onPatch(`/logoutAsAdmin/${sessionId}`).reply(200);
+
+    const result = await logoutAsAdmin(sessionId);
+
+    expect(result).toEqual({ type: "success", value: "" });
+  });
+
+  it("erro", async () => {
+    apiMockUser.onPatch(`/logoutAsAdmin/${sessionId}`).reply(400);
+    const result = await logoutAsAdmin(sessionId);
 
     expect(result).toEqual({
       type: "error",
