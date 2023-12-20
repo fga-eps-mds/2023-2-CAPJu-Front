@@ -82,8 +82,7 @@ export function CreationModal({
     toast({
       id: "create-stage-error",
       title: "Erro ao criar etapa",
-      description:
-        "Nome da etapa já existe. Por favor, escolha um nome diferente.",
+      description: res.error?.message || "Erro ao criar etapa",
       status: "error",
       isClosable: true,
     });
