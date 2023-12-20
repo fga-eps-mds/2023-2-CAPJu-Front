@@ -10,7 +10,6 @@ import {
   finalizeProcess,
   archiveProcess,
 } from "services/processManagement/processes";
-// import { vi } from "vitest";
 import { api } from "../../api";
 
 const apiMock = new MockAdapter(api.processManagement);
