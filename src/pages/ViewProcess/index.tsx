@@ -146,8 +146,8 @@ function ViewProcess() {
     refetchOnWindowFocus: false,
   });
   const { data: priorityData, isFetched: isPriorityFetched } = useQuery({
-    queryKey: ["priority", process?.idPriority],
-    queryFn: () => getPriorities(process?.idPriority),
+    queryKey: ["priority", processRaw?.idPriority],
+    queryFn: () => getPriorities(processRaw?.idPriority),
     refetchOnWindowFocus: false,
   });
   const stages = useMemo<Stage[]>(() => {

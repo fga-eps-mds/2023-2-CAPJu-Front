@@ -56,10 +56,14 @@ function ForgotPassword() {
       if (res.type === "error") {
         toast({
           id: uuidv4(),
-          description: res.error?.message || "Erro ao verificar token",
+          description: (
+            res.error?.message || "Erro ao verificar token."
+          ).concat(" Você será redirecionado para a tela de login."),
           status: "error",
         });
-        navigate("/");
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
       } else {
         setIsPasswordRecovery(true);
         setIsLoadingForm(false);
@@ -88,7 +92,7 @@ function ForgotPassword() {
       .string()
       .required("Preencha a senha")
       .matches(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z$*&@#]{6,}$/,
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
         "Senha não cumpre critérios"
       ),
     passwordConfirmation: yup

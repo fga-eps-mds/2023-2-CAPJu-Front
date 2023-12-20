@@ -216,12 +216,19 @@ describe("Testes para a função updateFlow", () => {
   });
 
   it("sucesso put /flow", async () => {
-    apiMockProcessManagement.onPut("/flow/").reply(200, {
-      name: "fluxo 01",
-      sequences: [],
-      idUsersToNotify: [],
-      idFlow: 1,
-    });
+    apiMockProcessManagement
+      .onPut("/flow", {
+        name: "fluxo 01",
+        sequences: [],
+        idUsersToNotify: [],
+        idFlow: 1,
+      })
+      .reply(200, {
+        name: "fluxo 01",
+        sequences: [],
+        idUsersToNotify: [],
+        idFlow: 1,
+      });
 
     const result = await updateFlow({
       name: "fluxo 01",
