@@ -204,7 +204,7 @@ function Signup() {
         >
           <Image w="100%" maxW="36" src="/assets/logo.png" m="0 auto" />
           <Text fontSize={["lg", "xl"]} fontWeight="semibold">
-            Faça seu Cadastro
+            Faça seu cadastro
           </Text>
           <chakra.form
             w="100%"
@@ -237,7 +237,8 @@ function Signup() {
               errors={errors.email}
               {...register("email")}
               readOnly
-              onFocus={(e) => e.target.removeAttribute("readOnly")}
+              onFocus={(e) => e.currentTarget.removeAttribute("readOnly")}
+              onBlur={(e) => e.currentTarget.setAttribute("readOnly", "true")}
             />
             <InputGroup>
               <Input
