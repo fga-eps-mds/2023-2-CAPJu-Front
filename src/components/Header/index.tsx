@@ -91,7 +91,18 @@ export function Header() {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Image w="20%" maxW="24" src="/assets/logo.png" />
+        <Image
+          w="20%"
+          maxW="24"
+          src="/assets/logo.png"
+          _hover={{ cursor: "pointer" }}
+          title="Home"
+          onClick={() => {
+            navigate("/");
+            setIsOpen(false);
+            setTabIndex(0);
+          }}
+        />
         {isAuthenticated ? (
           <>
             <Flex alignItems="center" ml="auto" gap="5">
